@@ -7,7 +7,7 @@ self.addEventListener('install', function(e) {
       return cache.addAll(FILES);
     })
   );
-  self.skipWaiting();
+  // Don't skipWaiting automatically — wait for user to approve update
 });
 
 self.addEventListener('activate', function(e) {
@@ -25,4 +25,11 @@ self.addEventListener('fetch', function(e) {
       return cached || fetch(e.request);
     })
   );
+});
+
+// Listen for skip waiting message from the app
+self.addEventListener('message', function(e) {
+  if (e.data && e.data.action === 'skipWaiting') {
+    self.skipWaiting();
+  }
 });

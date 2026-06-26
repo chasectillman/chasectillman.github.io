@@ -23,6 +23,7 @@
   }
   body.light .hero { background: linear-gradient(160deg, #c8dff0 60%, #b0cfe8); }
   body.light .progress-wrap { background: #ddeaf5; }
+  body.light .section-header { background: var(--deep); }
   body.light .panel-input, body.light .panel-textarea, body.light .note-field,
   body.light .expiry-input, body.light .maint-type-btn { background: rgba(0,0,0,0.04); color: var(--foam); }
   body.light .conditions-cell { background: rgba(0,0,0,0.04); }
@@ -66,9 +67,9 @@
   .update-text { flex: 1; font-size: 13px; color: var(--wake); font-weight: 500; }
   .update-btn { background: var(--wake); color: var(--deep); border: none; border-radius: 6px; padding: 7px 14px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; -webkit-tap-highlight-color: transparent; }
   .section { margin: 20px 16px 0; }
-  .section-header-wrap { position: relative; overflow: hidden; border-radius: 8px; margin-bottom: 10px; }
-  .section-header { display: flex; align-items: center; gap: 10px; padding: 4px 0; position: relative; z-index: 1; background: transparent; transition: transform 0.2s ease; touch-action: pan-y; }
-  .section-reset-reveal { position: absolute; right: 0; top: 0; bottom: 0; width: 80px; display: flex; align-items: center; justify-content: center; background: var(--danger); border-radius: 8px; }
+  .section-header-wrap { position: relative; overflow: hidden; border-radius: 10px; margin-bottom: 10px; }
+  .section-header { display: flex; align-items: center; gap: 10px; padding: 6px 12px; position: relative; z-index: 2; background: var(--deep); transition: transform 0.25s ease; touch-action: pan-y; cursor: pointer; }
+  .section-reset-reveal { position: absolute; right: 0; top: 0; bottom: 0; width: 80px; display: flex; align-items: center; justify-content: center; background: var(--danger); z-index: 1; }
   .section-reset-btn { background: none; border: none; color: white; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; padding: 0 12px; height: 100%; -webkit-tap-highlight-color: transparent; }
   .section-icon { font-size: 18px; }
   .section-title { font-size: 19px; font-weight: 800; letter-spacing: 0.01em; color: var(--wake); }

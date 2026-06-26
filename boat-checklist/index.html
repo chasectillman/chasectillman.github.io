@@ -62,6 +62,12 @@
   .reset-full-btn { flex: 1; background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 14px 18px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; }
   .export-btn { flex: 1; background: var(--water); color: white; border: none; border-radius: 8px; padding: 14px 18px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; }
   .export-btn:active { opacity: 0.8; }
+  .import-bar { margin: 10px 16px 0; }
+  .import-btn { width: 100%; background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 13px 18px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; }
+  .import-btn:active { opacity: 0.7; }
+  .import-toast { display: none; margin: 10px 16px 0; border-radius: 8px; padding: 11px 16px; font-size: 13px; font-weight: 600; text-align: center; }
+  .import-toast.ok { display: block; background: rgba(46,201,126,0.12); border: 1px solid var(--check); color: var(--check); }
+  .import-toast.err { display: block; background: rgba(224,82,82,0.12); border: 1px solid var(--danger); color: var(--danger); }
   .offline-badge { position: fixed; bottom: calc(env(safe-area-inset-bottom, 0px) + 12px); right: 16px; background: var(--navy); border: 1px solid var(--border); border-radius: 20px; padding: 6px 12px; font-size: 11px; color: var(--muted); display: none; }
   .offline-badge.show { display: block; }
   .update-banner { display: none; margin: 14px 16px 0; background: linear-gradient(90deg, #1a3a5c, #0e2d4a); border: 1px solid var(--wake); border-radius: 8px; padding: 12px 16px; gap: 12px; align-items: center; }
@@ -96,6 +102,11 @@
   <button class="reset-full-btn" onclick="resetAll()">Reset</button>
   <button class="export-btn" onclick="exportCSV()">&#8595; Export CSV</button>
 </div>
+<div class="import-bar">
+  <button class="import-btn" onclick="document.getElementById('csvInput').click()">&#8593; Restore from CSV</button>
+  <input type="file" id="csvInput" accept=".csv" style="display:none" onchange="importCSV(this)">
+</div>
+<div class="import-toast" id="importToast"></div>
 
 <div class="offline-badge" id="offlineBadge">&#9889; Offline</div>
 <div class="spacer"></div>
@@ -332,6 +343,82 @@ function exportCSV() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+}
+
+function importCSV(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var toast = document.getElementById('importToast');
+    try {
+      var lines = e.target.result.split('\n');
+      var imported = 0;
+      var newExpiries = {};
+
+      // Find the header row
+      var headerIdx = -1;
+      for (var i = 0; i < lines.length; i++) {
+        if (lines[i].indexOf('Section') >= 0 && lines[i].indexOf('Item') >= 0) {
+          headerIdx = i;
+          break;
+        }
+      }
+      if (headerIdx < 0) throw new Error('Header row not found');
+
+      // Parse data rows
+      for (var r = headerIdx + 1; r < lines.length; r++) {
+        var line = lines[r].trim();
+        if (!line) continue;
+
+        // Simple CSV parse (handles quoted fields)
+        var cols = [];
+        var cur = ''; var inQ = false;
+        for (var c = 0; c < line.length; c++) {
+          var ch = line[c];
+          if (ch === '"') { inQ = !inQ; }
+          else if (ch === ',' && !inQ) { cols.push(cur); cur = ''; }
+          else { cur += ch; }
+        }
+        cols.push(cur);
+
+        var sectionName = cols[0] ? cols[0].replace(/^"|"$/g, '').trim() : '';
+        var itemText    = cols[1] ? cols[1].replace(/^"|"$/g, '').trim() : '';
+        var isChecked   = cols[2] ? cols[2].replace(/^"|"$/g, '').trim() : '';
+        var expiryDate  = cols[3] ? cols[3].replace(/^"|"$/g, '').trim() : '';
+
+        // Match against DATA
+        DATA.forEach(function(section, si) {
+          if (section.title !== sectionName) return;
+          section.items.forEach(function(item, ii) {
+            if (item.text !== itemText) return;
+            var k = key(si, ii);
+            checked[k] = (isChecked === 'Yes');
+            if (item.expiry && expiryDate) {
+              newExpiries[item.expiryId] = expiryDate;
+            }
+            imported++;
+          });
+        });
+      }
+
+      // Merge expiries
+      Object.assign(expiries, newExpiries);
+      save();
+      saveExpiry();
+      render();
+      updateProgress();
+
+      toast.textContent = 'Restored ' + imported + ' items successfully';
+      toast.className = 'import-toast ok';
+    } catch(err) {
+      toast.textContent = 'Import failed — make sure you are using a valid exported CSV';
+      toast.className = 'import-toast err';
+    }
+    setTimeout(function() { toast.className = 'import-toast'; }, 4000);
+    input.value = '';
+  };
+  reader.readAsText(file);
 }
 
 render();

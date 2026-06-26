@@ -16,11 +16,43 @@
     --foam: #f4f0e6; --check: #2ec97e; --warn: #f0a500; --danger: #e05252; --muted: #5a7a92;
     --border: rgba(74,144,196,0.18);
   }
+  body.light {
+    --navy: #ddeaf5; --deep: #f0f6fb; --water: #1a6fa8; --wake: #1565a0;
+    --foam: #1a2a38; --check: #1a9e5c; --warn: #c47a00; --danger: #c0392b; --muted: #607d8b;
+    --border: rgba(26,101,160,0.18);
+  }
+  body.light .hero { background: linear-gradient(160deg, #c8dff0 60%, #b0cfe8); }
+  body.light .progress-wrap { background: #ddeaf5; }
+  body.light .panel-input, body.light .panel-textarea, body.light .note-field,
+  body.light .expiry-input, body.light .maint-type-btn { background: rgba(0,0,0,0.04); color: var(--foam); }
+  body.light .conditions-cell { background: rgba(0,0,0,0.04); }
+  body.light .offline-badge { background: #ddeaf5; }
+
+  /* Theme toggle */
+  .theme-toggle { position: absolute; top: calc(env(safe-area-inset-top, 0px) + 18px); right: 20px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--foam); cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; }
+  .hero { position: relative; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; background: var(--deep); color: var(--foam); min-height: 100vh; padding-bottom: env(safe-area-inset-bottom, 40px); -webkit-text-size-adjust: 100%; }
   .hero { background: linear-gradient(160deg, var(--navy) 60%, #0e3556); padding: calc(env(safe-area-inset-top, 0px) + 28px) 20px 24px; border-bottom: 2px solid var(--water); }
   .hero-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--wake); margin-bottom: 6px; font-weight: 600; }
   .hero-title { font-size: clamp(34px, 9vw, 52px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; color: var(--foam); }
   .hero-sub { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .pax-row { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(74,144,196,0.2); }
+  .pax-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+  .pax-controls { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .pax-btn { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--water); background: none; color: var(--wake); font-size: 20px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; line-height: 1; }
+  .pax-count { font-size: 22px; font-weight: 800; color: var(--foam); min-width: 28px; text-align: center; }
+  .pax-warn { font-size: 11px; font-weight: 700; color: var(--warn); margin-top: 4px; display: none; }
+  .pax-warn.show { display: block; }
+
+  /* Weather & sunset strip */
+  .conditions-row { display: flex; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(74,144,196,0.2); }
+  .conditions-cell { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; min-width: 0; }
+  .conditions-cell-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+  .conditions-cell-value { font-size: 18px; font-weight: 800; color: var(--foam); line-height: 1.1; }
+  .conditions-cell-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .conditions-cell-sub.nav-lights { color: var(--warn); font-weight: 600; }
+  .conditions-refresh { width: 100%; background: none; border: none; color: var(--muted); font-size: 11px; margin-top: 8px; cursor: pointer; font-family: inherit; text-align: center; -webkit-tap-highlight-color: transparent; padding: 4px; }
+  .conditions-loading { color: var(--muted); font-size: 13px; font-style: italic; }
   .progress-wrap { background: var(--navy); padding: 12px 20px; display: flex; align-items: center; gap: 14px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
   .bar-bg { flex: 1; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
   .bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--water), var(--wake)); border-radius: 3px; transition: width 0.3s ease, background 0.3s ease; }
@@ -29,8 +61,15 @@
   .reset-btn { background: none; border: 1px solid var(--border); color: var(--muted); font-size: 11px; padding: 5px 11px; border-radius: 5px; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; }
   .ready { display: none; margin: 14px 16px 0; background: linear-gradient(90deg, #0d3d22, #0b4d2a); border: 1px solid var(--check); border-radius: 8px; padding: 13px 18px; color: var(--check); font-weight: 700; font-size: 14px; text-align: center; }
   .ready.show { display: block; }
+  .update-banner { display: none; margin: 14px 16px 0; background: linear-gradient(90deg, #1a3a5c, #0e2d4a); border: 1px solid var(--wake); border-radius: 8px; padding: 12px 16px; gap: 12px; align-items: center; }
+  .update-banner.show { display: flex; }
+  .update-text { flex: 1; font-size: 13px; color: var(--wake); font-weight: 500; }
+  .update-btn { background: var(--wake); color: var(--deep); border: none; border-radius: 6px; padding: 7px 14px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; -webkit-tap-highlight-color: transparent; }
   .section { margin: 20px 16px 0; }
-  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .section-header-wrap { position: relative; overflow: hidden; border-radius: 8px; margin-bottom: 10px; }
+  .section-header { display: flex; align-items: center; gap: 10px; padding: 4px 0; position: relative; z-index: 1; background: transparent; transition: transform 0.2s ease; touch-action: pan-y; }
+  .section-reset-reveal { position: absolute; right: 0; top: 0; bottom: 0; width: 80px; display: flex; align-items: center; justify-content: center; background: var(--danger); border-radius: 8px; }
+  .section-reset-btn { background: none; border: none; color: white; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; padding: 0 12px; height: 100%; -webkit-tap-highlight-color: transparent; }
   .section-icon { font-size: 18px; }
   .section-title { font-size: 19px; font-weight: 800; letter-spacing: 0.01em; color: var(--wake); }
   .section-count { margin-left: auto; font-size: 11px; color: var(--muted); font-weight: 500; }
@@ -47,8 +86,11 @@
   .item-text { font-size: 15px; font-weight: 500; color: var(--foam); line-height: 1.4; transition: color 0.2s; }
   .item.checked .item-text { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(90,122,146,0.4); }
   .item-note { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
-
-  /* Expiry row */
+  .note-toggle { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; font-size: 11px; color: var(--muted); cursor: pointer; -webkit-tap-highlight-color: transparent; border: none; background: none; font-family: inherit; padding: 0; }
+  .note-toggle.has-note { color: var(--wake); }
+  .note-field { display: none; margin-top: 6px; width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--foam); font-size: 13px; padding: 7px 9px; font-family: inherit; resize: none; line-height: 1.4; }
+  .note-field:focus { outline: none; border-color: var(--wake); }
+  .note-field.open { display: block; }
   .expiry-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
   .expiry-label { font-size: 11px; color: var(--muted); font-weight: 500; white-space: nowrap; }
   .expiry-input { background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 6px; color: var(--foam); font-size: 13px; padding: 5px 8px; font-family: inherit; flex: 1; min-width: 0; -webkit-appearance: none; }
@@ -57,32 +99,110 @@
   .expiry-status.ok { background: rgba(46,201,126,0.15); color: var(--check); }
   .expiry-status.soon { background: rgba(240,165,0,0.15); color: var(--warn); }
   .expiry-status.expired { background: rgba(224,82,82,0.15); color: var(--danger); }
-
   .save-bar { margin: 20px 16px 0; display: flex; gap: 10px; }
   .reset-full-btn { flex: 1; background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 14px 18px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; }
   .export-btn { flex: 1; background: var(--water); color: white; border: none; border-radius: 8px; padding: 14px 18px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; }
   .export-btn:active { opacity: 0.8; }
   .import-bar { margin: 10px 16px 0; }
   .import-btn { width: 100%; background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 13px 18px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; }
-  .import-btn:active { opacity: 0.7; }
   .import-toast { display: none; margin: 10px 16px 0; border-radius: 8px; padding: 11px 16px; font-size: 13px; font-weight: 600; text-align: center; }
   .import-toast.ok { display: block; background: rgba(46,201,126,0.12); border: 1px solid var(--check); color: var(--check); }
   .import-toast.err { display: block; background: rgba(224,82,82,0.12); border: 1px solid var(--danger); color: var(--danger); }
+
+  /* Shared panel styles */
+  .panel { margin: 24px 16px 0; }
+  .panel-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .panel-title { font-size: 19px; font-weight: 800; color: var(--wake); }
+  .panel-action { margin-left: auto; font-size: 11px; color: var(--muted); background: none; border: 1px solid var(--border); border-radius: 5px; padding: 4px 10px; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; transition: all 0.2s; }
+  .panel-action.armed { color: var(--danger); border-color: var(--danger); }
+  .panel-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .panel-row { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-bottom: 1px solid var(--border); }
+  .panel-row:last-child { border-bottom: none; }
+  .panel-label { font-size: 12px; color: var(--muted); font-weight: 500; min-width: 100px; }
+  .panel-input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--foam); font-size: 13px; padding: 6px 9px; font-family: inherit; -webkit-appearance: none; }
+  .panel-input:focus { outline: none; border-color: var(--wake); }
+  .panel-textarea { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--foam); font-size: 13px; padding: 6px 9px; font-family: inherit; resize: none; line-height: 1.4; }
+  .panel-textarea:focus { outline: none; border-color: var(--wake); }
+  .full-btn { width: 100%; border-radius: 8px; padding: 13px 18px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; margin-top: 10px; border: none; }
+  .full-btn.primary { background: var(--water); color: white; }
+  .full-btn.success { background: rgba(46,201,126,0.1); border: 1px solid var(--check); color: var(--check); }
+  .full-btn.success.saved { background: rgba(46,201,126,0.2); }
+  .full-btn:active { opacity: 0.8; }
+
+  /* Maintenance log */
+  .maint-entry { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; padding: 13px 14px; margin-bottom: 8px; }
+  .maint-entry-type { font-size: 13px; font-weight: 700; color: var(--foam); margin-bottom: 3px; }
+  .maint-entry-date { font-size: 12px; color: var(--wake); margin-bottom: 2px; }
+  .maint-entry-detail { font-size: 12px; color: var(--muted); }
+  .maint-form { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
+  .maint-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+  .maint-type-btn { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 6px; color: var(--muted); font-size: 12px; font-weight: 600; padding: 8px 6px; cursor: pointer; font-family: inherit; text-align: center; -webkit-tap-highlight-color: transparent; transition: all 0.15s; }
+  .maint-type-btn.selected { background: rgba(74,179,230,0.15); border-color: var(--wake); color: var(--wake); }
+
+  /* Trip log */
+  .log-trip-btn { width: 100%; background: rgba(46,201,126,0.1); border: 1px solid var(--check); color: var(--check); border-radius: 8px; padding: 12px 18px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; margin-bottom: 12px; }
+  .log-trip-btn.saved { background: rgba(46,201,126,0.2); }
+  .log-empty { font-size: 13px; color: var(--muted); padding: 14px; text-align: center; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 10px; }
+  .log-entry { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; padding: 13px 14px; margin-bottom: 8px; }
+  .log-entry-date { font-size: 12px; font-weight: 700; color: var(--wake); margin-bottom: 4px; }
+  .log-entry-stats { font-size: 12px; color: var(--muted); }
+  .log-entry-pax { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
   .offline-badge { position: fixed; bottom: calc(env(safe-area-inset-bottom, 0px) + 12px); right: 16px; background: var(--navy); border: 1px solid var(--border); border-radius: 20px; padding: 6px 12px; font-size: 11px; color: var(--muted); display: none; }
   .offline-badge.show { display: block; }
-  .update-banner { display: none; margin: 14px 16px 0; background: linear-gradient(90deg, #1a3a5c, #0e2d4a); border: 1px solid var(--wake); border-radius: 8px; padding: 12px 16px; gap: 12px; align-items: center; }
-  .update-banner.show { display: flex; }
-  .update-text { flex: 1; font-size: 13px; color: var(--wake); font-weight: 500; }
-  .update-btn { background: var(--wake); color: var(--deep); border: none; border-radius: 6px; padding: 7px 14px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; -webkit-tap-highlight-color: transparent; }
+
+  /* QR Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: flex-end; justify-content: center; }
+  .modal-overlay.show { display: flex; }
+  .modal-sheet { background: var(--navy); border-radius: 20px 20px 0 0; padding: 24px 20px calc(env(safe-area-inset-bottom,0px) + 24px); width: 100%; max-width: 480px; }
+  .modal-title { font-size: 17px; font-weight: 800; color: var(--foam); text-align: center; margin-bottom: 6px; }
+  .modal-sub { font-size: 12px; color: var(--muted); text-align: center; margin-bottom: 20px; }
+  .qr-wrap { background: white; border-radius: 12px; padding: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .modal-btn-row { display: flex; gap: 10px; }
+  .modal-btn { flex: 1; border-radius: 8px; padding: 13px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; border: none; }
+  .modal-btn.primary { background: var(--water); color: white; }
+  .modal-btn.secondary { background: rgba(255,255,255,0.08); color: var(--muted); }
+
   .spacer { height: 60px; }
 </style>
 </head>
 <body>
 
 <div class="hero">
+  <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">☀️ Light</button>
   <div class="hero-label">GS232 · BF225 · Lake Martin</div>
   <div class="hero-title">Pre-Departure<br>Checklist</div>
   <div class="hero-sub">Complete before every launch</div>
+  <div class="pax-row">
+    <div>
+      <div class="pax-label">Passengers on board</div>
+      <div class="pax-warn" id="paxWarn">&#9888; PFDs not yet checked</div>
+    </div>
+    <div class="pax-controls">
+      <button class="pax-btn" onclick="changePax(-1)">&#8722;</button>
+      <div class="pax-count" id="paxCount">1</div>
+      <button class="pax-btn" onclick="changePax(1)">+</button>
+    </div>
+  </div>
+  <!-- Weather & Sunset -->
+  <div class="conditions-row" id="conditionsRow">
+    <div class="conditions-cell">
+      <div class="conditions-cell-label">Weather</div>
+      <div class="conditions-cell-value conditions-loading" id="wxValue">—</div>
+      <div class="conditions-cell-sub" id="wxSub"></div>
+    </div>
+    <div class="conditions-cell">
+      <div class="conditions-cell-label">Wind</div>
+      <div class="conditions-cell-value" id="windValue">—</div>
+      <div class="conditions-cell-sub" id="windSub"></div>
+    </div>
+    <div class="conditions-cell">
+      <div class="conditions-cell-label">Sunset</div>
+      <div class="conditions-cell-value" id="sunsetValue">—</div>
+      <div class="conditions-cell-sub" id="sunsetSub"></div>
+    </div>
+  </div>
+  <button class="conditions-refresh" onclick="fetchConditions()">&#8635; Refresh conditions</button>
 </div>
 
 <div class="progress-wrap">
@@ -96,6 +216,7 @@
   <span class="update-text">&#8593; New version available</span>
   <button class="update-btn" onclick="applyUpdate()">Update Now</button>
 </div>
+
 <div id="list"></div>
 
 <div class="save-bar">
@@ -107,6 +228,105 @@
   <input type="file" id="csvInput" accept=".csv" style="display:none" onchange="importCSV(this)">
 </div>
 <div class="import-toast" id="importToast"></div>
+
+<!-- Float Plan -->
+<div class="panel">
+  <div class="panel-header">
+    <span>&#128506;</span>
+    <span class="panel-title">Float Plan</span>
+    <button class="panel-action" onclick="clearFloatPlan()">Clear</button>
+  </div>
+  <div class="panel-card">
+    <div class="panel-row">
+      <span class="panel-label">Destination</span>
+      <input class="panel-input" type="text" id="fp-destination" placeholder="e.g. Kowaliga Marina" onchange="saveFloatPlan()">
+    </div>
+    <div class="panel-row">
+      <span class="panel-label">Launch Ramp</span>
+      <input class="panel-input" type="text" id="fp-ramp" placeholder="e.g. Wind Creek Ramp" onchange="saveFloatPlan()">
+    </div>
+    <div class="panel-row">
+      <span class="panel-label">Departure</span>
+      <input class="panel-input" type="datetime-local" id="fp-depart" onchange="saveFloatPlan()">
+    </div>
+    <div class="panel-row">
+      <span class="panel-label">Return by</span>
+      <input class="panel-input" type="datetime-local" id="fp-return" onchange="saveFloatPlan()">
+    </div>
+    <div class="panel-row">
+      <span class="panel-label">Contact name</span>
+      <input class="panel-input" type="text" id="fp-contact-name" placeholder="Name" onchange="saveFloatPlan()">
+    </div>
+    <div class="panel-row">
+      <span class="panel-label">Contact phone</span>
+      <input class="panel-input" type="tel" id="fp-contact-phone" placeholder="Phone number" onchange="saveFloatPlan()">
+    </div>
+    <div class="panel-row">
+      <span class="panel-label">Vessel</span>
+      <input class="panel-input" type="text" id="fp-vessel" placeholder="e.g. 2003 Hurricane GS232" onchange="saveFloatPlan()">
+    </div>
+    <div class="panel-row">
+      <span class="panel-label">Hull ID</span>
+      <input class="panel-input" type="text" id="fp-hull" placeholder="HIN" onchange="saveFloatPlan()">
+    </div>
+    <div class="panel-row" style="align-items:flex-start">
+      <span class="panel-label" style="padding-top:6px">Notes</span>
+      <textarea class="panel-textarea" rows="2" id="fp-notes" placeholder="Additional info..." onchange="saveFloatPlan()"></textarea>
+    </div>
+  </div>
+  <button class="full-btn primary" onclick="shareFloatPlan()">&#8679; Share Float Plan</button>
+  <button class="full-btn secondary" style="margin-top:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;width:100%;" onclick="showQR()">&#9638; Show QR Code</button>
+</div>
+
+<!-- QR Modal -->
+<div class="modal-overlay" id="qrModal" onclick="closeQR()">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-title">Float Plan QR Code</div>
+    <div class="modal-sub">Passengers can scan this to view the float plan</div>
+    <div class="qr-wrap"><canvas id="qrCanvas"></canvas></div>
+    <div class="modal-btn-row">
+      <button class="modal-btn primary" onclick="shareQR()">&#8679; Share QR</button>
+      <button class="modal-btn secondary" onclick="closeQR()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Maintenance Log -->
+<div class="panel">
+  <div class="panel-header">
+    <span>&#128296;</span>
+    <span class="panel-title">Maintenance Log</span>
+    <button class="panel-action" id="maintClearBtn" onclick="clearMaint()">Clear</button>
+  </div>
+  <div class="maint-form">
+    <div class="maint-type-grid" id="maintTypeGrid"></div>
+    <div class="panel-row">
+      <span class="panel-label">Date</span>
+      <input class="panel-input" type="date" id="maint-date">
+    </div>
+    <div class="panel-row">
+      <span class="panel-label">Engine hours</span>
+      <input class="panel-input" type="number" id="maint-hours" placeholder="Optional">
+    </div>
+    <div class="panel-row" style="align-items:flex-start">
+      <span class="panel-label" style="padding-top:6px">Notes</span>
+      <textarea class="panel-textarea" rows="2" id="maint-notes" placeholder="Brand, quantity, observations..."></textarea>
+    </div>
+  </div>
+  <button class="full-btn success" id="maintSaveBtn" onclick="saveMaintEntry()">+ Add Entry</button>
+  <div id="maintList" style="margin-top:12px"></div>
+</div>
+
+<!-- Trip Log -->
+<div class="panel">
+  <div class="panel-header">
+    <span>&#128221;</span>
+    <span class="panel-title">Trip Log</span>
+    <button class="panel-action" id="clearBtn" onclick="clearLog()">Clear</button>
+  </div>
+  <button class="log-trip-btn" id="logTripBtn" onclick="logTrip()">&#128205; Log This Trip</button>
+  <div id="logList"></div>
+</div>
 
 <div class="offline-badge" id="offlineBadge">&#9889; Offline</div>
 <div class="spacer"></div>
@@ -124,21 +344,16 @@ if ('serviceWorker' in navigator) {
       });
     });
   }).catch(function() {});
-
-  navigator.serviceWorker.addEventListener('controllerchange', function() {
-    window.location.reload();
-  });
+  navigator.serviceWorker.addEventListener('controllerchange', function() { window.location.reload(); });
 }
-
 function applyUpdate() {
-  if (newWorker) {
-    newWorker.postMessage({ action: 'skipWaiting' });
-  } else {
-    window.location.reload();
-  }
+  if (newWorker) { newWorker.postMessage({ action: 'skipWaiting' }); }
+  else { window.location.reload(); }
 }
 window.addEventListener('online', function() { document.getElementById('offlineBadge').className = 'offline-badge'; });
 window.addEventListener('offline', function() { document.getElementById('offlineBadge').className = 'offline-badge show'; });
+
+const MAINT_TYPES = ['Oil Change','Gear Lube','Impeller','Spark Plugs','Fuel Filter','Belt/Cable','Bottom Paint','Battery','Trailer','Other'];
 
 const DATA = [
   { icon: "🚗", title: "At the Ramp", items: [
@@ -168,7 +383,7 @@ const DATA = [
     { text: "Anchor + adequate rode stowed and accessible" },
   ]},
   { icon: "📋", title: "Documentation", items: [
-    { text: "Alabama registration certificate on board", warn: true, tag: "AL Required" },
+    { text: "Alabama registration certificate on board", warn: true, tag: "AL Required", expiry: true, expiryId: "registration" },
     { text: "Registration numbers displayed on hull", note: 'AL- prefix, 3" block letters, both sides of bow' },
     { text: "Float plan left with someone ashore", note: "Include destination, passenger count, and expected return time" },
   ]},
@@ -189,98 +404,146 @@ const DATA = [
   ]},
 ];
 
-const total = DATA.reduce((a, s) => a + s.items.length, 0);
-const KEY = 'boat-checklist-v1';
+const total = DATA.reduce(function(a, s) { return a + s.items.length; }, 0);
+const KEY        = 'boat-checklist-v1';
 const EXPIRY_KEY = 'boat-checklist-expiry-v1';
-let checked = {};
-let expiries = {};
+const NOTES_KEY  = 'boat-checklist-notes-v1';
+const LOG_KEY    = 'boat-checklist-log-v1';
+const PAX_KEY    = 'boat-checklist-pax-v1';
+const FP_KEY     = 'boat-checklist-fp-v1';
+const MAINT_KEY  = 'boat-checklist-maint-v1';
 
-try { const s = localStorage.getItem(KEY); if (s) checked = JSON.parse(s); } catch(e) {}
-try { const s = localStorage.getItem(EXPIRY_KEY); if (s) expiries = JSON.parse(s); } catch(e) {}
+var checked  = {};
+var expiries = {};
+var notes    = {};
+var tripLog  = [];
+var pax      = 1;
+var floatPlan = {};
+var maintLog  = [];
+var maintTypeSelected = '';
 
-function save() {
-  try { localStorage.setItem(KEY, JSON.stringify(checked)); } catch(e) {}
+try { var s = localStorage.getItem(KEY);        if (s) checked   = JSON.parse(s); } catch(e) {}
+try { var s = localStorage.getItem(EXPIRY_KEY); if (s) expiries  = JSON.parse(s); } catch(e) {}
+try { var s = localStorage.getItem(NOTES_KEY);  if (s) notes     = JSON.parse(s); } catch(e) {}
+try { var s = localStorage.getItem(LOG_KEY);    if (s) tripLog   = JSON.parse(s); } catch(e) {}
+try { var s = localStorage.getItem(PAX_KEY);    if (s) pax       = parseInt(s) || 1; } catch(e) {}
+try { var s = localStorage.getItem(FP_KEY);     if (s) floatPlan = JSON.parse(s); } catch(e) {}
+try { var s = localStorage.getItem(MAINT_KEY);  if (s) maintLog  = JSON.parse(s); } catch(e) {}
+
+function save()       { try { localStorage.setItem(KEY,        JSON.stringify(checked));   } catch(e) {} }
+function saveExpiry() { try { localStorage.setItem(EXPIRY_KEY, JSON.stringify(expiries));  } catch(e) {} }
+function saveNotes()  { try { localStorage.setItem(NOTES_KEY,  JSON.stringify(notes));     } catch(e) {} }
+function saveLog()    { try { localStorage.setItem(LOG_KEY,    JSON.stringify(tripLog));   } catch(e) {} }
+function savePax()    { try { localStorage.setItem(PAX_KEY,    String(pax));               } catch(e) {} }
+function saveFP()     { try { localStorage.setItem(FP_KEY,     JSON.stringify(floatPlan)); } catch(e) {} }
+function saveMaint()  { try { localStorage.setItem(MAINT_KEY,  JSON.stringify(maintLog));  } catch(e) {} }
+
+function key(si, ii)     { return si + '-' + ii; }
+function noteKey(si, ii) { return 'n-' + si + '-' + ii; }
+
+// Pax
+document.getElementById('paxCount').textContent = pax;
+function changePax(delta) {
+  pax = Math.max(1, pax + delta);
+  document.getElementById('paxCount').textContent = pax;
+  savePax();
+  checkPaxWarn();
 }
-function saveExpiry() {
-  try { localStorage.setItem(EXPIRY_KEY, JSON.stringify(expiries)); } catch(e) {}
+function checkPaxWarn() {
+  var pfdsChecked = !!checked[key(2, 0)];
+  document.getElementById('paxWarn').className = 'pax-warn' + (!pfdsChecked ? ' show' : '');
 }
-
-function key(si, ii) { return si + '-' + ii; }
 
 function expiryStatus(dateStr) {
   if (!dateStr) return null;
-  const exp = new Date(dateStr);
-  const now = new Date();
-  const daysLeft = Math.ceil((exp - now) / (1000 * 60 * 60 * 24));
+  var exp = new Date(dateStr + '-01');
+  var now = new Date();
+  var daysLeft = Math.ceil((exp - now) / (1000 * 60 * 60 * 24));
   if (daysLeft < 0) return { label: 'EXPIRED', cls: 'expired' };
-  if (daysLeft <= 30) return { label: daysLeft + 'd left', cls: 'soon' };
   if (daysLeft <= 90) return { label: daysLeft + 'd left', cls: 'soon' };
-  const months = Math.ceil(daysLeft / 30);
-  return { label: months + 'mo left', cls: 'ok' };
+  return { label: Math.ceil(daysLeft / 30) + 'mo left', cls: 'ok' };
 }
 
 function render() {
-  const list = document.getElementById('list');
+  var list = document.getElementById('list');
   list.innerHTML = '';
   DATA.forEach(function(section, si) {
-    const secDone = section.items.filter(function(_, ii) { return checked[key(si, ii)]; }).length;
-    const wrap = document.createElement('div'); wrap.className = 'section';
-    const header = document.createElement('div'); header.className = 'section-header';
+    var secDone = section.items.filter(function(_, ii) { return checked[key(si, ii)]; }).length;
+    var wrap = document.createElement('div'); wrap.className = 'section';
+    var headerWrap = document.createElement('div'); headerWrap.className = 'section-header-wrap';
+    var resetReveal = document.createElement('div'); resetReveal.className = 'section-reset-reveal';
+    var resetBtn = document.createElement('button'); resetBtn.className = 'section-reset-btn';
+    resetBtn.textContent = 'Reset';
+    resetBtn.onclick = (function(si) { return function() { resetSection(si); }; })(si);
+    resetReveal.appendChild(resetBtn);
+    var header = document.createElement('div'); header.className = 'section-header';
     header.innerHTML = '<span class="section-icon">' + section.icon + '</span><span class="section-title">' + section.title + '</span><span class="section-count">' + secDone + ' / ' + section.items.length + '</span>';
-    wrap.appendChild(header);
-    const card = document.createElement('div'); card.className = 'card';
+    headerWrap.appendChild(resetReveal);
+    headerWrap.appendChild(header);
+    addSwipe(header, si);
+    wrap.appendChild(headerWrap);
+    var card = document.createElement('div'); card.className = 'card';
     section.items.forEach(function(item, ii) {
-      const k = key(si, ii);
-      const isChecked = !!checked[k];
-      const div = document.createElement('div');
+      var k = key(si, ii);
+      var nk = noteKey(si, ii);
+      var isChecked = !!checked[k];
+      var userNote = notes[nk] || '';
+      var div = document.createElement('div');
       div.className = 'item' + (item.warn ? ' warn' : '') + (isChecked ? ' checked' : '');
-
-      const tagHTML = item.tag ? '<div class="item-tag' + (item.tagBlue ? ' blue' : '') + '">' + item.tag + '</div>' : '';
-      const noteHTML = item.note ? '<div class="item-note">' + item.note + '</div>' : '';
-
-      // Build expiry row if applicable
-      let expiryHTML = '';
+      div.onclick = function() { checked[k] = !checked[k]; save(); checkPaxWarn(); render(); updateProgress(); };
+      var tagHTML = item.tag ? '<div class="item-tag' + (item.tagBlue ? ' blue' : '') + '">' + item.tag + '</div>' : '';
+      var noteHTML = item.note ? '<div class="item-note">' + item.note + '</div>' : '';
+      var expiryHTML = '';
       if (item.expiry) {
-        const eid = item.expiryId;
-        const val = expiries[eid] || '';
-        const status = expiryStatus(val);
-        const statusHTML = status ? '<span class="expiry-status ' + status.cls + '">' + status.label + '</span>' : '';
+        var val = expiries[item.expiryId] || '';
+        var status = expiryStatus(val);
+        var statusHTML = status ? '<span class="expiry-status ' + status.cls + '">' + status.label + '</span>' : '';
         expiryHTML = '<div class="expiry-row" onclick="event.stopPropagation()">'
           + '<span class="expiry-label">Expires:</span>'
-          + '<input class="expiry-input" type="month" value="' + val + '" data-eid="' + eid + '" onchange="updateExpiry(this)" />'
-          + statusHTML
-          + '</div>';
+          + '<input class="expiry-input" type="month" value="' + val + '" data-eid="' + item.expiryId + '" onchange="updateExpiry(this)" />'
+          + statusHTML + '</div>';
       }
-
+      var hasNote = userNote.length > 0;
+      var noteToggleHTML = '<button class="note-toggle' + (hasNote ? ' has-note' : '') + '" data-nk="' + nk + '" onclick="event.stopPropagation(); toggleNote(this)">'
+        + (hasNote ? '&#128221; ' + userNote.substring(0, 30) + (userNote.length > 30 ? '…' : '') : '+ Add note') + '</button>'
+        + '<textarea class="note-field" rows="2" data-nk="' + nk + '" onclick="event.stopPropagation()" onchange="saveNote(this)" placeholder="Add a note...">' + userNote + '</textarea>';
       div.innerHTML = '<div class="cb">' + (isChecked ? '&#10003;' : '') + '</div>'
-        + '<div class="item-body">' + tagHTML
-        + '<div class="item-text">' + item.text + '</div>'
-        + noteHTML + expiryHTML + '</div>';
-
-      div.onclick = function() { checked[k] = !checked[k]; save(); render(); updateProgress(); };
+        + '<div class="item-body">' + tagHTML + '<div class="item-text">' + item.text + '</div>' + noteHTML + expiryHTML + noteToggleHTML + '</div>';
       card.appendChild(div);
     });
     wrap.appendChild(card);
     list.appendChild(wrap);
   });
+  renderLog();
+  renderMaintList();
+  checkPaxWarn();
+  restoreFloatPlan();
 }
 
+function toggleNote(btn) {
+  var field = btn.nextElementSibling;
+  field.classList.toggle('open');
+  if (field.classList.contains('open')) field.focus();
+}
+function saveNote(textarea) {
+  notes[textarea.dataset.nk] = textarea.value.trim();
+  saveNotes();
+  render();
+}
 function updateExpiry(input) {
   expiries[input.dataset.eid] = input.value;
   saveExpiry();
   render();
 }
-
 function updateProgress() {
-  const done = Object.values(checked).filter(Boolean).length;
-  const pct = total ? Math.round(done / total * 100) : 0;
-  const fill = document.getElementById('fill');
+  var done = Object.values(checked).filter(Boolean).length;
+  var pct = total ? Math.round(done / total * 100) : 0;
+  var fill = document.getElementById('fill');
   fill.style.width = pct + '%';
   fill.className = 'bar-fill' + (done === total ? ' done' : '');
   document.getElementById('prog').textContent = done + ' / ' + total;
   document.getElementById('ready').className = 'ready' + (done === total && total > 0 ? ' show' : '');
 }
-
 function resetAll() {
   checked = {};
   save();
@@ -289,141 +552,583 @@ function resetAll() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// ── FLOAT PLAN ──────────────────────────────────────────
+var fpFields = ['destination','ramp','depart','return','contact-name','contact-phone','vessel','hull','notes'];
+function saveFloatPlan() {
+  fpFields.forEach(function(f) {
+    var el = document.getElementById('fp-' + f);
+    if (el) floatPlan[f] = el.value;
+  });
+  saveFP();
+}
+function restoreFloatPlan() {
+  fpFields.forEach(function(f) {
+    var el = document.getElementById('fp-' + f);
+    if (el && floatPlan[f] !== undefined) el.value = floatPlan[f];
+  });
+}
+function clearFloatPlan() {
+  floatPlan = {};
+  saveFP();
+  fpFields.forEach(function(f) {
+    var el = document.getElementById('fp-' + f);
+    if (el) el.value = '';
+  });
+}
+function shareFloatPlan() {
+  saveFloatPlan();
+  var now = new Date();
+  var lines = [
+    '=== FLOAT PLAN ===',
+    'Filed: ' + now.toLocaleString(),
+    '',
+    'VESSEL',
+    'Type:    ' + (floatPlan.vessel || '—'),
+    'Hull ID: ' + (floatPlan.hull   || '—'),
+    '',
+    'TRIP',
+    'Destination: ' + (floatPlan.destination || '—'),
+    'Launch Ramp: ' + (floatPlan.ramp        || '—'),
+    'Departure:   ' + (floatPlan.depart       || '—'),
+    'Return by:   ' + (floatPlan.return       || '—'),
+    'Passengers:  ' + pax,
+    '',
+    'EMERGENCY CONTACT',
+    'Name:  ' + (floatPlan['contact-name']  || '—'),
+    'Phone: ' + (floatPlan['contact-phone'] || '—'),
+  ];
+  if (floatPlan.notes) lines.push('', 'NOTES', floatPlan.notes);
+  lines.push('', 'If I have not returned by the time above, please contact the Alabama Marine Police: (334) 242-3673');
+  var text = lines.join('\n');
+  if (navigator.share) {
+    navigator.share({ title: 'Float Plan', text: text }).catch(function() {});
+  } else {
+    var el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    alert('Float plan copied to clipboard');
+  }
+}
+
+// ── MAINTENANCE LOG ──────────────────────────────────────
+function renderMaintTypeGrid() {
+  var grid = document.getElementById('maintTypeGrid');
+  grid.innerHTML = MAINT_TYPES.map(function(t) {
+    return '<button class="maint-type-btn' + (maintTypeSelected === t ? ' selected' : '') + '" onclick="selectMaintType(\'' + t + '\')">' + t + '</button>';
+  }).join('');
+  // Set today as default date if empty
+  var dateEl = document.getElementById('maint-date');
+  if (dateEl && !dateEl.value) {
+    var now = new Date();
+    dateEl.value = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+  }
+}
+function selectMaintType(t) {
+  maintTypeSelected = (maintTypeSelected === t) ? '' : t;
+  renderMaintTypeGrid();
+}
+function saveMaintEntry() {
+  var dateEl  = document.getElementById('maint-date');
+  var hoursEl = document.getElementById('maint-hours');
+  var notesEl = document.getElementById('maint-notes');
+  if (!maintTypeSelected) { alert('Please select a service type'); return; }
+  if (!dateEl.value) { alert('Please enter a date'); return; }
+  var entry = {
+    type:  maintTypeSelected,
+    date:  dateEl.value,
+    hours: hoursEl.value || '',
+    notes: notesEl.value.trim()
+  };
+  maintLog.unshift(entry);
+  saveMaint();
+  // Reset form
+  maintTypeSelected = '';
+  hoursEl.value = '';
+  notesEl.value = '';
+  renderMaintTypeGrid();
+  var btn = document.getElementById('maintSaveBtn');
+  btn.textContent = '&#10003; Saved';
+  btn.className = 'full-btn success saved';
+  setTimeout(function() { btn.innerHTML = '+ Add Entry'; btn.className = 'full-btn success'; }, 2000);
+  renderMaintList();
+}
+function renderMaintList() {
+  var el = document.getElementById('maintList');
+  if (!el) return;
+  if (maintLog.length === 0) {
+    el.innerHTML = '<div class="log-empty">No maintenance recorded yet</div>';
+    return;
+  }
+  el.innerHTML = maintLog.map(function(e) {
+    return '<div class="maint-entry">'
+      + '<div class="maint-entry-type">' + e.type + '</div>'
+      + '<div class="maint-entry-date">' + e.date + (e.hours ? ' &nbsp;·&nbsp; ' + e.hours + ' hrs' : '') + '</div>'
+      + (e.notes ? '<div class="maint-entry-detail">' + e.notes + '</div>' : '')
+      + '</div>';
+  }).join('');
+}
+var maintClearArmed = false;
+var maintClearTimer = null;
+function clearMaint() {
+  var btn = document.getElementById('maintClearBtn');
+  if (!maintClearArmed) {
+    maintClearArmed = true;
+    btn.textContent = 'Tap again to confirm';
+    btn.className = 'panel-action armed';
+    maintClearTimer = setTimeout(function() {
+      maintClearArmed = false;
+      btn.textContent = 'Clear';
+      btn.className = 'panel-action';
+    }, 3000);
+  } else {
+    clearTimeout(maintClearTimer);
+    maintClearArmed = false;
+    btn.textContent = 'Clear';
+    btn.className = 'panel-action';
+    maintLog = [];
+    saveMaint();
+    renderMaintList();
+  }
+}
+
+// ── TRIP LOG ────────────────────────────────────────────
+function logTrip() {
+  var now = new Date();
+  var done = Object.values(checked).filter(Boolean).length;
+  tripLog.unshift({
+    date: now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }),
+    time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+    pax: pax, checked: done, total: total
+  });
+  if (tripLog.length > 50) tripLog.pop();
+  saveLog();
+  var btn = document.getElementById('logTripBtn');
+  btn.textContent = '&#10003; Trip Saved';
+  btn.className = 'log-trip-btn saved';
+  setTimeout(function() { btn.innerHTML = '&#128205; Log This Trip'; btn.className = 'log-trip-btn'; }, 2000);
+  renderLog();
+}
+function renderLog() {
+  var el = document.getElementById('logList');
+  if (!el) return;
+  if (tripLog.length === 0) {
+    el.innerHTML = '<div class="log-empty">No trips logged yet — tap "Log This Trip" to record an entry</div>';
+    return;
+  }
+  el.innerHTML = tripLog.map(function(e) {
+    return '<div class="log-entry">'
+      + '<div class="log-entry-date">' + e.date + ' at ' + e.time + '</div>'
+      + '<div class="log-entry-stats">' + e.checked + ' / ' + e.total + ' items checked</div>'
+      + '<div class="log-entry-pax">&#128100; ' + e.pax + ' passenger' + (e.pax !== 1 ? 's' : '') + ' on board</div>'
+      + '</div>';
+  }).join('');
+}
+var clearArmed = false;
+var clearTimer = null;
+function clearLog() {
+  var btn = document.getElementById('clearBtn');
+  if (!clearArmed) {
+    clearArmed = true;
+    btn.textContent = 'Tap again to confirm';
+    btn.className = 'panel-action armed';
+    clearTimer = setTimeout(function() {
+      clearArmed = false;
+      btn.textContent = 'Clear';
+      btn.className = 'panel-action';
+    }, 3000);
+  } else {
+    clearTimeout(clearTimer);
+    clearArmed = false;
+    btn.textContent = 'Clear';
+    btn.className = 'panel-action';
+    tripLog = [];
+    saveLog();
+    renderLog();
+  }
+}
+
+// ── CSV EXPORT / IMPORT ──────────────────────────────────
 function exportCSV() {
   var now = new Date();
-  var dateStr = now.getFullYear() + '-'
-    + String(now.getMonth() + 1).padStart(2, '0') + '-'
-    + String(now.getDate()).padStart(2, '0');
-  var timeStr = String(now.getHours()).padStart(2, '0') + ':'
-    + String(now.getMinutes()).padStart(2, '0');
-
+  var dateStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+  var timeStr = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
   var rows = [
     ['GS232 BF225 Pre-Departure Checklist'],
     ['Exported:', dateStr + ' ' + timeStr],
-    [''],
-    ['Section', 'Item', 'Checked', 'Expiry Date', 'Expiry Status']
+    ['Passengers:', pax], [''],
+    ['Section','Item','Checked','Expiry Date','Expiry Status','User Note']
   ];
-
   DATA.forEach(function(section, si) {
     section.items.forEach(function(item, ii) {
-      var k = key(si, ii);
+      var k = key(si, ii); var nk = noteKey(si, ii);
       var isChecked = checked[k] ? 'Yes' : 'No';
-      var expiryDate = '';
-      var expiryStatusStr = '';
+      var expiryDate = ''; var expiryStatusStr = '';
       if (item.expiry) {
         expiryDate = expiries[item.expiryId] || '';
-        if (expiryDate) {
-          var status = expiryStatus(expiryDate);
-          expiryStatusStr = status ? status.label.toUpperCase() : '';
-        }
+        if (expiryDate) { var st = expiryStatus(expiryDate); expiryStatusStr = st ? st.label.toUpperCase() : ''; }
       }
-      rows.push([
-        section.title,
-        item.text,
-        isChecked,
-        expiryDate,
-        expiryStatusStr
-      ]);
+      rows.push([section.title, item.text, isChecked, expiryDate, expiryStatusStr, notes[nk] || '']);
     });
   });
-
+  if (tripLog.length > 0) {
+    rows.push([''],['Trip Log'],['Date','Time','Passengers','Items Checked']);
+    tripLog.forEach(function(e) { rows.push([e.date, e.time, e.pax, e.checked+'/'+e.total]); });
+  }
+  if (maintLog.length > 0) {
+    rows.push([''],['Maintenance Log'],['Type','Date','Engine Hours','Notes']);
+    maintLog.forEach(function(e) { rows.push([e.type, e.date, e.hours, e.notes]); });
+  }
   var csv = rows.map(function(row) {
     return row.map(function(cell) {
-      var c = String(cell).replace(/"/g, '""');
-      return c.indexOf(',') >= 0 || c.indexOf('"') >= 0 || c.indexOf('\n') >= 0 ? '"' + c + '"' : c;
+      var c = String(cell).replace(/"/g,'""');
+      return (c.indexOf(',')>=0||c.indexOf('"')>=0||c.indexOf('\n')>=0) ? '"'+c+'"' : c;
     }).join(',');
   }).join('\n');
 
-  var blob = new Blob([csv], { type: 'text/csv' });
+  var filename = 'boat-checklist-' + dateStr + '.csv';
+
+  // Use share sheet on iOS so user can save to iCloud Drive
+  if (navigator.share && navigator.canShare) {
+    var file = new File([csv], filename, { type: 'text/csv' });
+    if (navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: filename }).catch(function() { downloadCSV(csv, filename); });
+      return;
+    }
+  }
+  downloadCSV(csv, filename);
+}
+
+function downloadCSV(csv, filename) {
+  var blob = new Blob([csv], {type:'text/csv'});
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
-  a.href = url;
-  a.download = 'boat-checklist-' + dateStr + '.csv';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
 
 function importCSV(input) {
-  var file = input.files[0];
-  if (!file) return;
+  var file = input.files[0]; if (!file) return;
   var reader = new FileReader();
   reader.onload = function(e) {
     var toast = document.getElementById('importToast');
     try {
       var lines = e.target.result.split('\n');
-      var imported = 0;
-      var newExpiries = {};
-
-      // Find the header row
+      var imported = 0; var newExpiries = {}; var newNotes = {};
       var headerIdx = -1;
       for (var i = 0; i < lines.length; i++) {
-        if (lines[i].indexOf('Section') >= 0 && lines[i].indexOf('Item') >= 0) {
-          headerIdx = i;
-          break;
-        }
+        if (lines[i].indexOf('Section') >= 0 && lines[i].indexOf('Item') >= 0) { headerIdx = i; break; }
       }
-      if (headerIdx < 0) throw new Error('Header row not found');
-
-      // Parse data rows
-      for (var r = headerIdx + 1; r < lines.length; r++) {
+      if (headerIdx < 0) throw new Error('Header not found');
+      for (var r = headerIdx+1; r < lines.length; r++) {
         var line = lines[r].trim();
-        if (!line) continue;
-
-        // Simple CSV parse (handles quoted fields)
-        var cols = [];
-        var cur = ''; var inQ = false;
-        for (var c = 0; c < line.length; c++) {
-          var ch = line[c];
-          if (ch === '"') { inQ = !inQ; }
-          else if (ch === ',' && !inQ) { cols.push(cur); cur = ''; }
-          else { cur += ch; }
+        if (!line || line.indexOf('Trip Log') >= 0 || line.indexOf('Maintenance') >= 0) break;
+        var cols=[]; var cur=''; var inQ=false;
+        for (var c=0;c<line.length;c++) {
+          var ch=line[c];
+          if(ch==='"'){inQ=!inQ;}
+          else if(ch===','&&!inQ){cols.push(cur);cur='';}
+          else{cur+=ch;}
         }
         cols.push(cur);
-
-        var sectionName = cols[0] ? cols[0].replace(/^"|"$/g, '').trim() : '';
-        var itemText    = cols[1] ? cols[1].replace(/^"|"$/g, '').trim() : '';
-        var isChecked   = cols[2] ? cols[2].replace(/^"|"$/g, '').trim() : '';
-        var expiryDate  = cols[3] ? cols[3].replace(/^"|"$/g, '').trim() : '';
-
-        // Match against DATA
-        DATA.forEach(function(section, si) {
-          if (section.title !== sectionName) return;
-          section.items.forEach(function(item, ii) {
-            if (item.text !== itemText) return;
-            var k = key(si, ii);
-            checked[k] = (isChecked === 'Yes');
-            if (item.expiry && expiryDate) {
-              newExpiries[item.expiryId] = expiryDate;
-            }
+        var sName=(cols[0]||'').replace(/^"|"$/g,'').trim();
+        var iText=(cols[1]||'').replace(/^"|"$/g,'').trim();
+        var iChecked=(cols[2]||'').replace(/^"|"$/g,'').trim();
+        var iExpiry=(cols[3]||'').replace(/^"|"$/g,'').trim();
+        var iNote=(cols[5]||'').replace(/^"|"$/g,'').trim();
+        DATA.forEach(function(section,si) {
+          if(section.title!==sName) return;
+          section.items.forEach(function(item,ii) {
+            if(item.text!==iText) return;
+            checked[key(si,ii)]=(iChecked==='Yes');
+            if(item.expiry&&iExpiry) newExpiries[item.expiryId]=iExpiry;
+            if(iNote) newNotes[noteKey(si,ii)]=iNote;
             imported++;
           });
         });
       }
-
-      // Merge expiries
-      Object.assign(expiries, newExpiries);
-      save();
-      saveExpiry();
-      render();
-      updateProgress();
-
-      toast.textContent = 'Restored ' + imported + ' items successfully';
-      toast.className = 'import-toast ok';
+      Object.assign(expiries,newExpiries); Object.assign(notes,newNotes);
+      save(); saveExpiry(); saveNotes();
+      render(); updateProgress();
+      toast.textContent='Restored '+imported+' items successfully';
+      toast.className='import-toast ok';
     } catch(err) {
-      toast.textContent = 'Import failed — make sure you are using a valid exported CSV';
-      toast.className = 'import-toast err';
+      toast.textContent='Import failed — use a valid exported CSV';
+      toast.className='import-toast err';
     }
-    setTimeout(function() { toast.className = 'import-toast'; }, 4000);
-    input.value = '';
+    setTimeout(function(){toast.className='import-toast';},4000);
+    input.value='';
   };
   reader.readAsText(file);
 }
 
+// ── WEATHER & SUNSET ────────────────────────────────────
+var LAKE_MARTIN_LAT = 32.75;
+var LAKE_MARTIN_LNG = -86.07;
+
+var WX_CODE_MAP = {
+  0:'Clear',1:'Mostly Clear',2:'Partly Cloudy',3:'Overcast',
+  45:'Foggy',48:'Icy Fog',
+  51:'Light Drizzle',53:'Drizzle',55:'Heavy Drizzle',
+  61:'Light Rain',63:'Rain',65:'Heavy Rain',
+  71:'Light Snow',73:'Snow',75:'Heavy Snow',
+  80:'Rain Showers',81:'Showers',82:'Heavy Showers',
+  95:'Thunderstorm',96:'T-Storm w/Hail',99:'T-Storm w/Hail'
+};
+
+function fetchConditions() {
+  document.getElementById('wxValue').textContent = '…';
+  document.getElementById('windValue').textContent = '…';
+
+  // Sunset is always calculated offline first
+  calcSunset(LAKE_MARTIN_LAT, LAKE_MARTIN_LNG);
+
+  // Try to get GPS location, fall back to Lake Martin coords
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function(pos) { fetchWeather(pos.coords.latitude, pos.coords.longitude); },
+      function()    { fetchWeather(LAKE_MARTIN_LAT, LAKE_MARTIN_LNG); },
+      { timeout: 6000 }
+    );
+  } else {
+    fetchWeather(LAKE_MARTIN_LAT, LAKE_MARTIN_LNG);
+  }
+}
+
+function fetchWeather(lat, lng) {
+  var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lng
+    + '&current=temperature_2m,weathercode,windspeed_10m,winddirection_10m,precipitation'
+    + '&temperature_unit=fahrenheit&windspeed_unit=mph&timezone=America%2FChicago';
+
+  fetch(url).then(function(r) { return r.json(); }).then(function(data) {
+    var c = data.current;
+    var code = c.weathercode;
+    var desc = WX_CODE_MAP[code] || 'Unknown';
+    var temp = Math.round(c.temperature_2m);
+    var wind = Math.round(c.windspeed_10m);
+    var dir  = windDir(c.winddirection_10m);
+    var precip = c.precipitation > 0 ? ' · ' + c.precipitation + 'mm precip' : '';
+
+    document.getElementById('wxValue').textContent = temp + '°F';
+    document.getElementById('wxSub').textContent   = desc + precip;
+    document.getElementById('windValue').textContent = wind + ' mph';
+    document.getElementById('windSub').textContent   = dir;
+
+    // Warn if thunderstorms
+    if (code >= 95) {
+      document.getElementById('wxSub').style.color = 'var(--danger)';
+      document.getElementById('wxSub').style.fontWeight = '700';
+    } else {
+      document.getElementById('wxSub').style.color = '';
+      document.getElementById('wxSub').style.fontWeight = '';
+    }
+  }).catch(function() {
+    document.getElementById('wxValue').textContent = 'Offline';
+    document.getElementById('wxSub').textContent   = 'No weather data';
+    document.getElementById('windValue').textContent = '—';
+  });
+}
+
+function windDir(deg) {
+  var dirs = ['N','NE','E','SE','S','SW','W','NW'];
+  return dirs[Math.round(deg / 45) % 8];
+}
+
+function calcSunset(lat, lng) {
+  var now   = new Date();
+  var jd    = 367 * now.getFullYear()
+    - Math.floor(7 * (now.getFullYear() + Math.floor((now.getMonth() + 1 + 9) / 12)) / 4)
+    + Math.floor(275 * (now.getMonth() + 1) / 9)
+    + now.getDate() + 1721013.5;
+
+  var n     = jd - 2451545.0;
+  var L     = (280.46 + 0.9856474 * n) % 360;
+  var g     = (357.528 + 0.9856003 * n) % 360;
+  var gR    = g * Math.PI / 180;
+  var lam   = L + 1.915 * Math.sin(gR) + 0.020 * Math.sin(2 * gR);
+  var lamR  = lam * Math.PI / 180;
+  var sinDec = 0.39782 * Math.sin(lamR);
+  var cosDec = Math.cos(Math.asin(sinDec));
+  var latR  = lat * Math.PI / 180;
+  var cosH  = (Math.cos(90.833 * Math.PI / 180) - sinDec * Math.sin(latR)) / (cosDec * Math.cos(latR));
+
+  if (cosH > 1 || cosH < -1) {
+    document.getElementById('sunsetValue').textContent = 'N/A';
+    document.getElementById('sunsetSub').textContent = '';
+    return;
+  }
+
+  var H      = (180 - Math.acos(cosH) * 180 / Math.PI) / 15;
+  var ra     = (lam / 15);
+  if (ra < 0) ra += 24;
+  var t      = H + ra - 0.06571 * n - 6.622;
+  var utc    = t + lng / 15;
+  if (utc < 0) utc += 24;
+  if (utc >= 24) utc -= 24;
+
+  // Convert UTC to local — use offset from JS
+  var offsetHr = -now.getTimezoneOffset() / 60;
+  var localHr  = (utc + offsetHr) % 24;
+  var hh = Math.floor(localHr);
+  var mm = Math.round((localHr - hh) * 60);
+  if (mm === 60) { hh++; mm = 0; }
+  var ampm = hh >= 12 ? 'PM' : 'AM';
+  var hh12 = hh % 12 || 12;
+  var sunsetStr = hh12 + ':' + String(mm).padStart(2, '0') + ' ' + ampm;
+
+  document.getElementById('sunsetValue').textContent = sunsetStr;
+
+  // Nav lights warning
+  var nowMins    = now.getHours() * 60 + now.getMinutes();
+  var sunsetMins = hh * 60 + mm;
+  var diff       = sunsetMins - nowMins;
+  var subEl      = document.getElementById('sunsetSub');
+  if (diff < 0) {
+    subEl.textContent = 'Nav lights required';
+    subEl.className   = 'conditions-cell-sub nav-lights';
+  } else if (diff < 60) {
+    subEl.textContent = 'Nav lights in ' + diff + 'min';
+    subEl.className   = 'conditions-cell-sub nav-lights';
+  } else {
+    subEl.textContent = Math.floor(diff / 60) + 'hr ' + (diff % 60) + 'min away';
+    subEl.className   = 'conditions-cell-sub';
+  }
+}
+
+// ── QR CODE ─────────────────────────────────────────────
+function buildFloatPlanText() {
+  saveFloatPlan();
+  var now = new Date();
+  var lines = [
+    'FLOAT PLAN — Filed: ' + now.toLocaleString(),
+    'Vessel: ' + (floatPlan.vessel || '—') + ' | HIN: ' + (floatPlan.hull || '—'),
+    'Destination: ' + (floatPlan.destination || '—'),
+    'Ramp: ' + (floatPlan.ramp || '—'),
+    'Depart: ' + (floatPlan.depart || '—') + ' | Return by: ' + (floatPlan.return || '—'),
+    'Passengers: ' + pax,
+    'Contact: ' + (floatPlan['contact-name'] || '—') + ' ' + (floatPlan['contact-phone'] || ''),
+    floatPlan.notes ? 'Notes: ' + floatPlan.notes : '',
+    'AL Marine Police: (334) 242-3673'
+  ].filter(Boolean);
+  return lines.join('\n');
+}
+
+function showQR() {
+  var text = buildFloatPlanText();
+  var canvas = document.getElementById('qrCanvas');
+  // Use QRious library for QR generation
+  if (typeof QRious === 'undefined') {
+    var script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js';
+    script.onload = function() { drawQR(canvas, text); };
+    document.head.appendChild(script);
+  } else {
+    drawQR(canvas, text);
+  }
+  document.getElementById('qrModal').className = 'modal-overlay show';
+}
+
+function drawQR(canvas, text) {
+  new QRious({
+    element: canvas,
+    value: text,
+    size: 260,
+    backgroundAlpha: 1,
+    foreground: '#091824',
+    background: '#ffffff',
+    level: 'M'
+  });
+}
+
+function closeQR() {
+  document.getElementById('qrModal').className = 'modal-overlay';
+}
+
+function shareQR() {
+  var canvas = document.getElementById('qrCanvas');
+  canvas.toBlob(function(blob) {
+    var file = new File([blob], 'float-plan-qr.png', { type: 'image/png' });
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: 'Float Plan QR Code' }).catch(function() {});
+    } else {
+      var url = canvas.toDataURL('image/png');
+      var a = document.createElement('a');
+      a.href = url; a.download = 'float-plan-qr.png';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    }
+  });
+}
+
+// ── THEME ────────────────────────────────────────────────
+var THEME_KEY = 'boat-checklist-theme-v1';
+var isLight = false;
+try { isLight = localStorage.getItem(THEME_KEY) === 'light'; } catch(e) {}
+function applyTheme() {
+  document.body.className = isLight ? 'light' : '';
+  document.getElementById('themeToggle').textContent = isLight ? '🌙 Dark' : '☀️ Light';
+}
+function toggleTheme() {
+  isLight = !isLight;
+  try { localStorage.setItem(THEME_KEY, isLight ? 'light' : 'dark'); } catch(e) {}
+  applyTheme();
+}
+applyTheme();
+
+// ── SWIPE TO RESET SECTION ───────────────────────────────
+function addSwipe(header, si) {
+  var startX = 0;
+  var currentX = 0;
+  var swiping = false;
+  var revealed = false;
+  var THRESHOLD = 60;
+
+  header.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX;
+    swiping = true;
+  }, { passive: true });
+
+  header.addEventListener('touchmove', function(e) {
+    if (!swiping) return;
+    currentX = e.touches[0].clientX - startX;
+    if (currentX < 0) {
+      var move = Math.max(currentX, -80);
+      header.style.transform = 'translateX(' + move + 'px)';
+    } else if (revealed) {
+      var move = Math.min(currentX, 80);
+      header.style.transform = 'translateX(' + (move - 80) + 'px)';
+    }
+  }, { passive: true });
+
+  header.addEventListener('touchend', function() {
+    swiping = false;
+    if (!revealed && currentX < -THRESHOLD) {
+      header.style.transform = 'translateX(-80px)';
+      revealed = true;
+    } else {
+      header.style.transform = 'translateX(0)';
+      revealed = false;
+    }
+    currentX = 0;
+  });
+}
+
+function resetSection(si) {
+  DATA[si].items.forEach(function(_, ii) {
+    checked[key(si, ii)] = false;
+  });
+  save();
+  render();
+  updateProgress();
+}
+
+// Init
 render();
 updateProgress();
+renderMaintTypeGrid();
+fetchConditions();
 </script>
 </body>
-</html>
 </html>

@@ -1,4 +1,4 @@
-const CACHE = 'boat-checklist-v1.1';
+const CACHE = 'boat-checklist-v1.2';
 const FILES = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', function(e) {

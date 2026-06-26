@@ -64,6 +64,10 @@
   .export-btn:active { opacity: 0.8; }
   .offline-badge { position: fixed; bottom: calc(env(safe-area-inset-bottom, 0px) + 12px); right: 16px; background: var(--navy); border: 1px solid var(--border); border-radius: 20px; padding: 6px 12px; font-size: 11px; color: var(--muted); display: none; }
   .offline-badge.show { display: block; }
+  .update-banner { display: none; margin: 14px 16px 0; background: linear-gradient(90deg, #1a3a5c, #0e2d4a); border: 1px solid var(--wake); border-radius: 8px; padding: 12px 16px; gap: 12px; align-items: center; }
+  .update-banner.show { display: flex; }
+  .update-text { flex: 1; font-size: 13px; color: var(--wake); font-weight: 500; }
+  .update-btn { background: var(--wake); color: var(--deep); border: none; border-radius: 6px; padding: 7px 14px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; -webkit-tap-highlight-color: transparent; }
   .spacer { height: 60px; }
 </style>
 </head>
@@ -82,6 +86,10 @@
 </div>
 
 <div class="ready" id="ready">&#9875; All clear — ready to launch</div>
+<div class="update-banner" id="updateBanner">
+  <span class="update-text">&#8593; New version available</span>
+  <button class="update-btn" onclick="applyUpdate()">Update Now</button>
+</div>
 <div id="list"></div>
 
 <div class="save-bar">
@@ -93,8 +101,30 @@
 <div class="spacer"></div>
 
 <script>
+var newWorker = null;
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(function() {});
+  navigator.serviceWorker.register('./sw.js').then(function(reg) {
+    reg.addEventListener('updatefound', function() {
+      newWorker = reg.installing;
+      newWorker.addEventListener('statechange', function() {
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          document.getElementById('updateBanner').className = 'update-banner show';
+        }
+      });
+    });
+  }).catch(function() {});
+
+  navigator.serviceWorker.addEventListener('controllerchange', function() {
+    window.location.reload();
+  });
+}
+
+function applyUpdate() {
+  if (newWorker) {
+    newWorker.postMessage({ action: 'skipWaiting' });
+  } else {
+    window.location.reload();
+  }
 }
 window.addEventListener('online', function() { document.getElementById('offlineBadge').className = 'offline-badge'; });
 window.addEventListener('offline', function() { document.getElementById('offlineBadge').className = 'offline-badge show'; });
@@ -308,4 +338,5 @@ render();
 updateProgress();
 </script>
 </body>
+</html>
 </html>

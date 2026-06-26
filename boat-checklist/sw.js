@@ -33,3 +33,4 @@ self.addEventListener('message', function(e) {
     self.skipWaiting();
   }
 });
+

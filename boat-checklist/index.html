@@ -938,22 +938,18 @@ function windDir(deg) {
 }
 
 function calcSunset(lat, lng) {
-  var now   = new Date();
-  var jd    = 367 * now.getFullYear()
-    - Math.floor(7 * (now.getFullYear() + Math.floor((now.getMonth() + 1 + 9) / 12)) / 4)
-    + Math.floor(275 * (now.getMonth() + 1) / 9)
-    + now.getDate() + 1721013.5;
+  var now = new Date();
+  // Use NOAA simplified algorithm
+  var start = new Date(now.getFullYear(), 0, 0);
+  var diff = now - start;
+  var oneDay = 1000 * 60 * 60 * 24;
+  var dayOfYear = Math.floor(diff / oneDay);
 
-  var n     = jd - 2451545.0;
-  var L     = (280.46 + 0.9856474 * n) % 360;
-  var g     = (357.528 + 0.9856003 * n) % 360;
-  var gR    = g * Math.PI / 180;
-  var lam   = L + 1.915 * Math.sin(gR) + 0.020 * Math.sin(2 * gR);
-  var lamR  = lam * Math.PI / 180;
-  var sinDec = 0.39782 * Math.sin(lamR);
-  var cosDec = Math.cos(Math.asin(sinDec));
-  var latR  = lat * Math.PI / 180;
-  var cosH  = (Math.cos(90.833 * Math.PI / 180) - sinDec * Math.sin(latR)) / (cosDec * Math.cos(latR));
+  var B = (360 / 365) * (dayOfYear - 81) * Math.PI / 180;
+  var EqT = 9.87 * Math.sin(2*B) - 7.53 * Math.cos(B) - 1.5 * Math.sin(B); // minutes
+  var decl = 23.45 * Math.sin(B) * Math.PI / 180;
+  var latR = lat * Math.PI / 180;
+  var cosH = -Math.tan(latR) * Math.tan(decl);
 
   if (cosH > 1 || cosH < -1) {
     document.getElementById('sunsetValue').textContent = 'N/A';
@@ -961,19 +957,19 @@ function calcSunset(lat, lng) {
     return;
   }
 
-  var H      = (180 - Math.acos(cosH) * 180 / Math.PI) / 15;
-  var ra     = (lam / 15);
-  if (ra < 0) ra += 24;
-  var t      = H + ra - 0.06571 * n - 6.622;
-  var utc    = t + lng / 15;
-  if (utc < 0) utc += 24;
-  if (utc >= 24) utc -= 24;
+  var HA = Math.acos(cosH) * 180 / Math.PI; // degrees
+  // Sunset in local solar minutes from noon
+  var solarNoon = 720 - 4 * lng - EqT; // minutes from midnight UTC
+  var sunsetUTCmin = solarNoon + 4 * HA; // minutes from midnight UTC
 
-  // Convert UTC to local — use offset from JS
-  var offsetHr = -now.getTimezoneOffset() / 60;
-  var localHr  = (utc + offsetHr) % 24;
-  var hh = Math.floor(localHr);
-  var mm = Math.round((localHr - hh) * 60);
+  // Convert to local time using JS timezone offset
+  var localOffsetMin = -now.getTimezoneOffset();
+  var localMin = sunsetUTCmin + localOffsetMin;
+  if (localMin < 0) localMin += 1440;
+  if (localMin >= 1440) localMin -= 1440;
+
+  var hh = Math.floor(localMin / 60);
+  var mm = Math.round(localMin % 60);
   if (mm === 60) { hh++; mm = 0; }
   var ampm = hh >= 12 ? 'PM' : 'AM';
   var hh12 = hh % 12 || 12;
@@ -983,17 +979,16 @@ function calcSunset(lat, lng) {
 
   // Nav lights warning
   var nowMins    = now.getHours() * 60 + now.getMinutes();
-  var sunsetMins = hh * 60 + mm;
-  var diff       = sunsetMins - nowMins;
+  var diff2      = Math.round(localMin) - nowMins;
   var subEl      = document.getElementById('sunsetSub');
-  if (diff < 0) {
+  if (diff2 < 0) {
     subEl.textContent = 'Nav lights required';
     subEl.className   = 'conditions-cell-sub nav-lights';
-  } else if (diff < 60) {
-    subEl.textContent = 'Nav lights in ' + diff + 'min';
+  } else if (diff2 < 60) {
+    subEl.textContent = 'Nav lights in ' + diff2 + 'min';
     subEl.className   = 'conditions-cell-sub nav-lights';
   } else {
-    subEl.textContent = Math.floor(diff / 60) + 'hr ' + (diff % 60) + 'min away';
+    subEl.textContent = Math.floor(diff2 / 60) + 'hr ' + (diff2 % 60) + 'min away';
     subEl.className   = 'conditions-cell-sub';
   }
 }
@@ -1003,15 +998,23 @@ function buildFloatPlanText() {
   saveFloatPlan();
   var now = new Date();
   var lines = [
-    'FLOAT PLAN — Filed: ' + now.toLocaleString(),
-    'Vessel: ' + (floatPlan.vessel || '—') + ' | HIN: ' + (floatPlan.hull || '—'),
-    'Destination: ' + (floatPlan.destination || '—'),
-    'Ramp: ' + (floatPlan.ramp || '—'),
-    'Depart: ' + (floatPlan.depart || '—') + ' | Return by: ' + (floatPlan.return || '—'),
+    'FLOAT PLAN',
+    'Filed: ' + now.toLocaleString(),
+    '---',
+    'Vessel: ' + (floatPlan.vessel || 'not set'),
+    'HIN: ' + (floatPlan.hull || 'not set'),
+    '---',
+    'Destination: ' + (floatPlan.destination || 'not set'),
+    'Ramp: ' + (floatPlan.ramp || 'not set'),
+    'Depart: ' + (floatPlan.depart || 'not set'),
+    'Return by: ' + (floatPlan['return'] || 'not set'),
     'Passengers: ' + pax,
-    'Contact: ' + (floatPlan['contact-name'] || '—') + ' ' + (floatPlan['contact-phone'] || ''),
+    '---',
+    'Contact: ' + (floatPlan['contact-name'] || 'not set'),
+    'Phone: ' + (floatPlan['contact-phone'] || 'not set'),
     floatPlan.notes ? 'Notes: ' + floatPlan.notes : '',
-    'AL Marine Police: (334) 242-3673'
+    '---',
+    'Overdue: call AL Marine Police 334-242-3673'
   ].filter(Boolean);
   return lines.join('\n');
 }
@@ -1019,7 +1022,6 @@ function buildFloatPlanText() {
 function showQR() {
   var text = buildFloatPlanText();
   var canvas = document.getElementById('qrCanvas');
-  // Use QRious library for QR generation
   if (typeof QRious === 'undefined') {
     var script = document.createElement('script');
     script.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js';
@@ -1080,39 +1082,31 @@ applyTheme();
 // ── SWIPE TO RESET SECTION ───────────────────────────────
 function addSwipe(header, si) {
   var startX = 0;
-  var currentX = 0;
-  var swiping = false;
   var revealed = false;
-  var THRESHOLD = 60;
+
+  function showReset() {
+    header.style.transform = 'translateX(-80px)';
+    revealed = true;
+  }
+  function hideReset() {
+    header.style.transform = 'translateX(0)';
+    revealed = false;
+  }
 
   header.addEventListener('touchstart', function(e) {
     startX = e.touches[0].clientX;
-    swiping = true;
   }, { passive: true });
 
-  header.addEventListener('touchmove', function(e) {
-    if (!swiping) return;
-    currentX = e.touches[0].clientX - startX;
-    if (currentX < 0) {
-      var move = Math.max(currentX, -80);
-      header.style.transform = 'translateX(' + move + 'px)';
-    } else if (revealed) {
-      var move = Math.min(currentX, 80);
-      header.style.transform = 'translateX(' + (move - 80) + 'px)';
-    }
+  header.addEventListener('touchend', function(e) {
+    var endX = e.changedTouches[0].clientX;
+    var delta = endX - startX;
+    if (delta < -40) { showReset(); }
+    else if (delta > 40 && revealed) { hideReset(); }
   }, { passive: true });
 
-  header.addEventListener('touchend', function() {
-    swiping = false;
-    if (!revealed && currentX < -THRESHOLD) {
-      header.style.transform = 'translateX(-80px)';
-      revealed = true;
-    } else {
-      header.style.transform = 'translateX(0)';
-      revealed = false;
-    }
-    currentX = 0;
-  });
+  document.addEventListener('touchstart', function(e) {
+    if (revealed && !header.parentElement.contains(e.target)) { hideReset(); }
+  }, { passive: true });
 }
 
 function resetSection(si) {
@@ -1131,4 +1125,5 @@ renderMaintTypeGrid();
 fetchConditions();
 </script>
 </body>
+</html>
 </html>

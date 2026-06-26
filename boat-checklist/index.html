@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Boat Check">
+<meta name="theme-color" content="#0d2137">
+<link rel="manifest" href="./manifest.json">
+<title>Pre-Departure Checklist</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0d2137; --deep: #091824; --water: #1a6fa8; --wake: #4db3e6;
+    --foam: #f4f0e6; --check: #2ec97e; --warn: #f0a500; --muted: #5a7a92;
+    --border: rgba(74,144,196,0.18);
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; background: var(--deep); color: var(--foam); min-height: 100vh; padding-bottom: env(safe-area-inset-bottom); }
+  .hero { background: linear-gradient(160deg, var(--navy) 60%, #0e3556); padding: calc(env(safe-area-inset-top, 0px) + 28px) 20px 24px; border-bottom: 2px solid var(--water); }
+  .hero-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--wake); margin-bottom: 6px; font-weight: 600; }
+  .hero-title { font-size: clamp(34px, 9vw, 52px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; color: var(--foam); }
+  .hero-sub { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .progress-wrap { background: var(--navy); padding: 12px 20px; display: flex; align-items: center; gap: 14px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+  .bar-bg { flex: 1; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--water), var(--wake)); border-radius: 3px; transition: width 0.3s ease, background 0.3s ease; }
+  .bar-fill.done { background: var(--check); }
+  .prog-label { font-size: 12px; font-weight: 600; color: var(--wake); min-width: 50px; text-align: right; }
+  .reset-btn { background: none; border: 1px solid var(--border); color: var(--muted); font-size: 11px; padding: 5px 11px; border-radius: 5px; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; }
+  .reset-btn:hover { color: var(--wake); border-color: var(--wake); }
+  .ready { display: none; margin: 14px 16px 0; background: linear-gradient(90deg, #0d3d22, #0b4d2a); border: 1px solid var(--check); border-radius: 8px; padding: 13px 18px; color: var(--check); font-weight: 600; text-align: center; }
+  .ready.show { display: block; }
+  .section { margin: 20px 16px 0; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .section-icon { font-size: 18px; }
+  .section-title { font-size: 19px; font-weight: 800; letter-spacing: 0.01em; color: var(--wake); }
+  .section-count { margin-left: auto; font-size: 11px; color: var(--muted); font-weight: 500; }
+  .card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .item { display: flex; align-items: flex-start; gap: 12px; padding: 13px 14px; border-bottom: 1px solid var(--border); cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none; }
+  .item:last-child { border-bottom: none; }
+  .item.checked { background: rgba(46,201,126,0.04); }
+  .cb { width: 24px; height: 24px; min-width: 24px; border: 2px solid var(--muted); border-radius: 6px; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .item.warn .cb { border-color: var(--warn); }
+  .item.checked .cb { background: var(--check); border-color: var(--check); color: white; }
+  .item-body { flex: 1; min-width: 0; }
+  .item-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warn); margin-bottom: 2px; }
+  .item-tag.blue { color: var(--wake); }
+  .item-text { font-size: 15px; font-weight: 500; color: var(--foam); line-height: 1.4; transition: color 0.2s; }
+  .item.checked .item-text { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(90,122,146,0.4); }
+  .item-note { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+  .save-bar { margin: 20px 16px 0; }
+  .reset-full-btn { width: 100%; background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 14px 18px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; transition: all 0.2s; }
+  .reset-full-btn:hover { border-color: var(--warn); color: var(--warn); }
+  .offline-badge { position: fixed; bottom: calc(env(safe-area-inset-bottom, 0px) + 12px); right: 16px; background: var(--navy); border: 1px solid var(--border); border-radius: 20px; padding: 6px 10px; font-size: 11px; color: var(--muted); display: none; z-index: 20; }
+  .offline-badge.show { display: block; }
+  .spacer { height: 60px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">GS232 · BF225 · Lake Martin</div>
+  <div class="hero-title">Pre-Departure<br>Checklist</div>
+  <div class="hero-sub">Complete before every launch</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="bar-bg"><div class="bar-fill" id="fill"></div></div>
+  <div class="prog-label" id="prog">0 / 0</div>
+  <button class="reset-btn" onclick="resetAll()">Reset</button>
+</div>
+
+<div class="ready" id="ready">&#9875; All clear — ready to launch</div>
+<div id="list"></div>
+
+<div class="save-bar">
+  <button class="reset-full-btn" onclick="resetAll()">Reset All Items</button>
+</div>
+
+<div class="offline-badge" id="offlineBadge">⚡ Offline</div>
+<div class="spacer"></div>
+
+<script>
+// Register service worker for offline support
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(function() {});
+}
+
+// Offline detection
+window.addEventListener('online', function() { document.getElementById('offlineBadge').className = 'offline-badge'; });
+window.addEventListener('offline', function() { document.getElementById('offlineBadge').className = 'offline-badge show'; });
+
+const DATA = [
+  { icon: "🚗", title: "At the Ramp", items: [
+    { text: "Install drain plug", note: "Check it's snug before backing down — #1 cause of sinking at the ramp", warn: true },
+    { text: "Remove transom tie-down straps", note: "Bow strap can stay until afloat, transom straps must come off first" },
+    { text: "Remove motor tilt lock / support", note: "BF225 tilt pin — confirm engine can tilt freely" },
+    { text: "Attach bow and stern dock lines", note: "Have lines ready before backing in" },
+    { text: "Disconnect trailer lights", note: "Prevents bulb shock from cold water (if not submersible)" },
+  ]},
+  { icon: "⛽", title: "Engine & Fuel", items: [
+    { text: "Check fuel level", note: "Rule of thirds: 1/3 out, 1/3 back, 1/3 reserve" },
+    { text: "Inspect fuel lines — no cracks or leaks", note: "Smell for fuel in bilge before starting" },
+    { text: "Check engine oil level (BF225)", note: "Cold check on level surface; full mark on dipstick" },
+    { text: "Check gear lube / lower unit oil", note: "Milky color = water intrusion — do not run" },
+    { text: "Cooling water intake clear of debris" },
+    { text: "Verify tell-tale stream within 30 sec of start", note: "No stream = potential impeller failure — shut down immediately" },
+    { text: "Kill switch lanyard clipped to operator", note: "Required by federal law — wear it every time", warn: true },
+  ]},
+  { icon: "🦺", title: "Safety Equipment", items: [
+    { text: "Life jackets / PFDs — one per person on board", note: "Children under 8 must wear one while underway", warn: true, tag: "AL Required" },
+    { text: "Type IV throwable device on deck", note: "Ring buoy or cushion — must be accessible, not stowed", warn: true, tag: "AL Required" },
+    { text: "Fire extinguisher — charged, accessible, not expired", note: "B-I minimum for boats under 26 ft", warn: true, tag: "AL Required" },
+    { text: "Navigation lights functional", note: "Required sunset to sunrise and in reduced visibility", tag: "Sunset Required", tagBlue: true },
+    { text: "Sound producing device (horn or whistle)" },
+    { text: "Visual distress signals / flares — not expired", note: "Check expiration date on package" },
+    { text: "First aid kit on board" },
+    { text: "Anchor + adequate rode stowed and accessible" },
+  ]},
+  { icon: "📋", title: "Documentation", items: [
+    { text: "Alabama registration certificate on board", warn: true, tag: "AL Required" },
+    { text: "Registration numbers displayed on hull", note: 'AL- prefix, 3" block letters, both sides of bow' },
+    { text: "Float plan left with someone ashore", note: "Include destination, passenger count, and expected return time" },
+  ]},
+  { icon: "🔌", title: "Electrical & Electronics", items: [
+    { text: "Battery voltage — main and auxiliary", note: "12.6V+ = fully charged; below 12.0V = needs charging" },
+    { text: "Battery selector switch in correct position", note: "Perko 8511 — BOTH for start, switch to primary after" },
+    { text: "Bilge pump on AUTO; manually test pump" },
+    { text: "VHF radio on, ch. 16 monitored", note: "Lake Martin has limited cell coverage in some coves" },
+    { text: "Depth finder / chartplotter operational" },
+  ]},
+  { icon: "🌊", title: "Underway Prep", items: [
+    { text: "Check weather forecast", note: "Afternoon thunderstorms are common in AL summers — plan return time accordingly" },
+    { text: "Cooler loaded; drain open or cracked" },
+    { text: "Loose gear stowed or secured", note: "Nothing unsecured that can become a projectile at speed" },
+    { text: "Passengers briefed — PFD locations, kill switch, float plan" },
+    { text: "Dock lines and fenders stowed after departure" },
+    { text: "Idle through no-wake zones; trim engine for cruising speed" },
+  ]},
+];
+
+const total = DATA.reduce((a, s) => a + s.items.length, 0);
+const KEY = 'boat-checklist-v1';
+let checked = {};
+
+try {
+  const saved = localStorage.getItem(KEY);
+  if (saved) checked = JSON.parse(saved);
+} catch(e) {}
+
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(checked)); } catch(e) {}
+}
+
+function key(si, ii) { return si + '-' + ii; }
+
+function render() {
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+  DATA.forEach(function(section, si) {
+    const secDone = section.items.filter(function(_, ii) { return checked[key(si, ii)]; }).length;
+    const wrap = document.createElement('div'); wrap.className = 'section';
+    const header = document.createElement('div'); header.className = 'section-header';
+    header.innerHTML = '<span class="section-icon">' + section.icon + '</span><span class="section-title">' + section.title + '</span><span class="section-count">' + secDone + ' / ' + section.items.length + '</span>';
+    wrap.appendChild(header);
+    const card = document.createElement('div'); card.className = 'card';
+    section.items.forEach(function(item, ii) {
+      const k = key(si, ii);
+      const isChecked = !!checked[k];
+      const div = document.createElement('div');
+      div.className = 'item' + (item.warn ? ' warn' : '') + (isChecked ? ' checked' : '');
+      div.onclick = function() { checked[k] = !checked[k]; save(); render(); updateProgress(); };
+      const tagHTML = item.tag ? '<div class="item-tag' + (item.tagBlue ? ' blue' : '') + '">' + item.tag + '</div>' : '';
+      div.innerHTML = '<div class="cb">' + (isChecked ? '&#10003;' : '') + '</div><div class="item-body">' + tagHTML + '<div class="item-text">' + item.text + '</div>' + (item.note ? '<div class="item-note">' + item.note + '</div>' : '') + '</div>';
+      card.appendChild(div);
+    });
+    wrap.appendChild(card);
+    list.appendChild(wrap);
+  });
+}
+
+function updateProgress() {
+  const done = Object.values(checked).filter(Boolean).length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  const fill = document.getElementById('fill');
+  fill.style.width = pct + '%';
+  fill.className = 'bar-fill' + (done === total ? ' done' : '');
+  document.getElementById('prog').textContent = done + ' / ' + total;
+  document.getElementById('ready').className = 'ready' + (done === total && total > 0 ? ' show' : '');
+}
+
+function resetAll() {
+  checked = {};
+  save();
+  render();
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+render();
+updateProgress();
+</script>
+</body>
+</html>

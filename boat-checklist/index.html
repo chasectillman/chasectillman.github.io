@@ -598,7 +598,7 @@ function shareFloatPlan() {
     'Phone: ' + (floatPlan['contact-phone'] || '—'),
   ];
   if (floatPlan.notes) lines.push('', 'NOTES', floatPlan.notes);
-  lines.push('', 'If I have not returned by the time above, please contact the Alabama Marine Police: (334) 242-3673');
+  lines.push('', 'If I have not returned by the time above, please contact the Alabama Marine Police (Alexander City): 256-329-2268 or TowBoatUS Lake Martin: 256-307-1313');
   var text = lines.join('\n');
   if (navigator.share) {
     navigator.share({ title: 'Float Plan', text: text }).catch(function() {});
@@ -1014,7 +1014,7 @@ function buildFloatPlanText() {
     'Phone: ' + (floatPlan['contact-phone'] || 'not set'),
     floatPlan.notes ? 'Notes: ' + floatPlan.notes : '',
     '---',
-    'Overdue: call AL Marine Police 334-242-3673'
+    'Overdue: call AL Marine Police 256-329-2268 or TowBoatUS 256-307-1313'
   ].filter(Boolean);
   return lines.join('\n');
 }
@@ -1125,5 +1125,4 @@ renderMaintTypeGrid();
 fetchConditions();
 </script>
 </body>
-</html>
 </html>
